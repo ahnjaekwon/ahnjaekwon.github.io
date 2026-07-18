@@ -16,6 +16,63 @@ if (cursor && matchMedia('(hover: hover)').matches) {
   });
 }
 
+// ---------- 빛가루 (커서를 따라 피어나는 금빛 먼지) ----------
+if (matchMedia('(hover: hover)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const canvas = document.createElement('canvas');
+  canvas.style.cssText = 'position:fixed;inset:0;z-index:250;pointer-events:none;mix-blend-mode:screen;';
+  document.body.appendChild(canvas);
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  const fit = () => { W = canvas.width = innerWidth; H = canvas.height = innerHeight; };
+  fit();
+  addEventListener('resize', fit);
+
+  const dust = [];
+  const GOLD = ['217,179,108', '233,213,170', '245,235,215'];
+  let lastX = 0, lastY = 0, lastSpawn = 0;
+
+  addEventListener('mousemove', e => {
+    const now = performance.now();
+    const moved = Math.hypot(e.clientX - lastX, e.clientY - lastY);
+    if (now - lastSpawn < 26 || moved < 4) return;   // 절제: 빠르게 움직일 때만 드문드문
+    lastSpawn = now; lastX = e.clientX; lastY = e.clientY;
+    const n = Math.min(2, Math.round(moved / 30) + 1);
+    for (let i = 0; i < n; i++) {
+      if (dust.length > 90) dust.shift();
+      dust.push({
+        x: e.clientX + (Math.random() - 0.5) * 14,
+        y: e.clientY + (Math.random() - 0.5) * 14,
+        r: 0.6 + Math.random() * 1.6,
+        vx: (Math.random() - 0.5) * 0.22,
+        vy: -0.14 - Math.random() * 0.3,       // 잉걸불처럼 천천히 위로
+        life: 1,
+        decay: 0.006 + Math.random() * 0.008,
+        c: GOLD[(Math.random() * GOLD.length) | 0],
+        tw: Math.random() * Math.PI * 2         // 반짝임 위상
+      });
+    }
+  }, { passive: true });
+
+  (function draw(t) {
+    ctx.clearRect(0, 0, W, H);
+    for (let i = dust.length - 1; i >= 0; i--) {
+      const p = dust[i];
+      p.x += p.vx; p.y += p.vy; p.life -= p.decay;
+      if (p.life <= 0) { dust.splice(i, 1); continue; }
+      const twinkle = 0.72 + 0.28 * Math.sin(t * 0.004 + p.tw);
+      const a = p.life * p.life * 0.5 * twinkle;  // 은은하게: 최대 투명도 0.5
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${p.c},${a})`;
+      ctx.shadowColor = `rgba(${p.c},${a * 0.8})`;
+      ctx.shadowBlur = 6;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+    requestAnimationFrame(draw);
+  })(0);
+}
+
 // ---------- 스크롤 시 내비게이션 ----------
 const nav = document.querySelector('.nav');
 addEventListener('scroll', () => {
