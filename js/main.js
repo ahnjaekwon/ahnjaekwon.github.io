@@ -33,22 +33,26 @@ if (matchMedia('(hover: hover)').matches && !matchMedia('(prefers-reduced-motion
 
   addEventListener('mousemove', e => {
     const now = performance.now();
-    const moved = Math.hypot(e.clientX - lastX, e.clientY - lastY);
+    const dx = e.clientX - lastX, dy = e.clientY - lastY;
+    const moved = Math.hypot(dx, dy);
     if (now - lastSpawn < 26 || moved < 4) return;   // 절제: 빠르게 움직일 때만 드문드문
     lastSpawn = now; lastX = e.clientX; lastY = e.clientY;
+    const ux = dx / moved, uy = dy / moved;          // 이동 방향 단위벡터
     const n = Math.min(2, Math.round(moved / 30) + 1);
     for (let i = 0; i < n; i++) {
       if (dust.length > 90) dust.shift();
+      const back = 10 + Math.random() * 22;          // 커서 '뒤쪽' 거리
+      const side = (Math.random() - 0.5) * 8;        // 자취에 수직인 미세한 퍼짐
       dust.push({
-        x: e.clientX + (Math.random() - 0.5) * 14,
-        y: e.clientY + (Math.random() - 0.5) * 14,
+        x: e.clientX - ux * back - uy * side,
+        y: e.clientY - uy * back + ux * side,
         r: 0.6 + Math.random() * 1.6,
-        vx: (Math.random() - 0.5) * 0.22,
-        vy: -0.14 - Math.random() * 0.3,       // 잉걸불처럼 천천히 위로
+        vx: -ux * 0.12 + (Math.random() - 0.5) * 0.1, // 뒤로 살짝 밀리며
+        vy: -0.14 - Math.random() * 0.3,              // 잉걸불처럼 천천히 위로
         life: 1,
         decay: 0.006 + Math.random() * 0.008,
         c: GOLD[(Math.random() * GOLD.length) | 0],
-        tw: Math.random() * Math.PI * 2         // 반짝임 위상
+        tw: Math.random() * Math.PI * 2               // 반짝임 위상
       });
     }
   }, { passive: true });
