@@ -259,6 +259,11 @@ section { position: relative; }
   padding-bottom: 8px; transition: color 0.3s, border-color 0.3s;
 }
 .contact-mail:hover { color: var(--gold); border-color: var(--gold); }
+.mail-digit {
+  font-family: var(--sans); font-style: normal; font-weight: 400;
+  font-size: 0.78em; vertical-align: 0.02em;
+  color: var(--gold);
+}
 
 /* ---------- 푸터 ---------- */
 .footer {
