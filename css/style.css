@@ -311,6 +311,21 @@ section { position: relative; }
   aspect-ratio: 9 / 16; max-width: 400px;
   margin-left: auto; margin-right: auto;
 }
+
+/* 본편 + 설치 시연 나란히 */
+.player-pair {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 26px;
+  margin-top: 64px;
+}
+.player-pair .player { margin-top: 0; }
+.player-cap {
+  font-size: 10.5px; letter-spacing: 0.24em; color: var(--ink-dim);
+  margin-top: 14px; text-transform: uppercase;
+}
+.player-cap b { color: var(--gold); font-weight: 500; }
+@media (max-width: 820px) {
+  .player-pair { grid-template-columns: 1fr; gap: 40px; }
+}
 .detail-section { margin-top: 90px; }
 .detail-label {
   font-size: 11px; letter-spacing: 0.3em; color: var(--gold);
