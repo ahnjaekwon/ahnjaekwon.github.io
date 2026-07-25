@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="카메라 구도">
+<meta name="theme-color" content="#0a0908">
+<meta name="robots" content="noindex, nofollow">
+<title>카메라 & 구도 레퍼런스 — eyecannndy.com 기반</title>
+<style>
+  :root{
+    --bg:#0a0908; --panel:#161413; --line:rgba(255,255,255,.08);
+    --ink:#e8e2d8; --ink-dim:#9a9187; --accent:#b8863a; --accent2:#7c1f1f;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:
+      radial-gradient(ellipse at 15% -10%, rgba(184,134,58,.07), transparent 40%),
+      radial-gradient(ellipse at 90% 10%, rgba(124,31,31,.06), transparent 45%), var(--bg);
+    color:var(--ink); font-family:"Pretendard","Noto Sans KR","Malgun Gothic",-apple-system,sans-serif; line-height:1.6;
+  }
+  header.hero{ padding:64px 24px 36px; text-align:center; border-bottom:1px solid var(--line); }
+  header.hero .eyebrow{ letter-spacing:.35em; text-transform:uppercase; font-size:11px; color:var(--accent); margin-bottom:14px; }
+  header.hero h1{ font-size:clamp(26px,4.5vw,40px); margin:0 0 12px; }
+  header.hero p{ color:var(--ink-dim); max-width:700px; margin:0 auto 6px; font-size:14px; }
+  header.hero .src{ font-size:12px; color:var(--ink-dim); }
+  header.hero .src a{ color:var(--accent); }
+
+  main{ max-width:1240px; margin:0 auto; padding:40px 24px 100px; }
+
+  .catlabel{ display:flex; align-items:baseline; gap:10px; margin:48px 0 18px; }
+  .catlabel .n{ color:var(--accent); font-size:12px; letter-spacing:.2em; }
+  .catlabel h2{ font-size:19px; margin:0; }
+  .catlabel .c{ color:var(--ink-dim); font-size:12px; }
+  section:first-of-type .catlabel{ margin-top:8px; }
+
+  .grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(330px,1fr)); gap:20px; }
+
+  .card{ background:var(--panel); border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+  .card .stage{ height:170px; position:relative; background:#050505; overflow:hidden; }
+  .card .stage a, .mstage a{ display:block; width:100%; height:100%; position:relative; }
+  .card .stage a::after, .mstage a::after{ content:"eyecannndy.com에서 더 보기 ↗"; position:absolute; inset:auto 0 0 0; padding:6px 8px; font-size:10px; color:#fff; background:linear-gradient(0deg, rgba(0,0,0,.75), transparent); opacity:0; transition:opacity .15s; pointer-events:none; }
+  .card .stage a:hover::after, .mstage a:hover::after{ opacity:1; }
+  .card .stage img{ width:100%; height:100%; object-fit:cover; display:block; filter:saturate(.9) brightness(.95); transition:transform .2s; }
+  .card .stage a:hover img, .mstage a:hover img{ transform:scale(1.04); }
+  .card .stage .idx{ position:absolute; top:8px; left:10px; font-size:10.5px; color:#fff; letter-spacing:.1em; z-index:5; background:rgba(0,0,0,.55); padding:2px 7px; border-radius:20px; }
+  .card .stage .src-tag{ position:absolute; bottom:8px; right:10px; font-size:9px; color:#fff; opacity:.75; background:rgba(0,0,0,.5); padding:2px 6px; border-radius:4px; }
+  .card .body{ padding:16px 18px 20px; }
+  .card h3{ margin:0 0 3px; font-size:17px; }
+  .card .kr{ font-size:12px; color:var(--accent); margin-bottom:10px; }
+  .card p.def{ margin:0 0 12px; font-size:12.5px; color:var(--ink-dim); }
+  .card .use{ font-size:12px; color:var(--ink); background:rgba(255,255,255,.03); border-left:2px solid var(--accent); padding:8px 10px; margin-bottom:12px; border-radius:0 6px 6px 0; }
+  .frag{ background:#0d0c0b; border:1px solid var(--line); border-radius:8px; padding:10px 12px; margin-bottom:8px; }
+  .frag .lbl{ font-size:9.5px; letter-spacing:.14em; color:var(--accent2); background:rgba(124,31,31,.18); display:inline-block; padding:2px 6px; border-radius:4px; margin-bottom:6px; }
+  .frag.video .lbl{ color:#e8791f; background:rgba(232,121,31,.14); }
+  .frag.post .lbl{ color:#8fa9b8; background:rgba(143,169,184,.14); }
+  .frag pre{ margin:0; font-family:"SF Mono",Consolas,monospace; font-size:11px; color:#d8d2c6; white-space:pre-wrap; line-height:1.55; }
+  .grades{ display:flex; gap:5px; margin-top:10px; flex-wrap:wrap; }
+  .grades span{ font-size:9.5px; border:1px solid var(--line); padding:2px 7px; border-radius:20px; color:var(--ink-dim); }
+
+  /* ---- compact library cards (E~K) ---- */
+  .mgrid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:18px; }
+  .mcard{ background:var(--panel); border:1px solid var(--line); border-radius:10px; overflow:hidden; }
+  .mstage{ height:170px; overflow:hidden; background:#050505; }
+  .mstage img{ width:100%; height:100%; object-fit:cover; display:block; filter:saturate(.85) brightness(.9); transition:transform .2s; }
+  .mbody{ padding:14px 16px 16px; }
+  .mbody h4{ margin:0 0 6px; font-size:16px; display:flex; justify-content:space-between; align-items:baseline; gap:8px; }
+  .mkr{ font-size:12px; color:var(--accent); font-weight:400; white-space:nowrap; }
+  .mdef{ margin:0 0 10px; font-size:12.5px; color:var(--ink-dim); line-height:1.5; min-height:2.6em; }
+  .mtip{ margin:0; font-size:12px; color:#d8d2c6; background:#0d0c0b; border:1px solid var(--line); border-radius:6px; padding:8px 10px; line-height:1.5; }
+  .mtip b{ color:#e8791f; font-size:10px; letter-spacing:.08em; }
+  .catlabel .full{ font-size:11px; color:var(--ink-dim); margin-left:auto; }
+
+  nav.tabs{
+    position:sticky; top:0; z-index:50;
+    display:flex; gap:0; overflow-x:auto;
+    background:rgba(10,9,8,.92); backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  nav.tabs a{
+    color:var(--ink-dim); text-decoration:none; font-size:12.5px;
+    padding:13px 16px; white-space:nowrap; border-bottom:2px solid transparent;
+    transition:.15s;
+  }
+  nav.tabs a:hover{ color:var(--ink); border-bottom-color:var(--accent); }
+  section[id]{ scroll-margin-top:52px; }
+
+  html{ -webkit-text-size-adjust:100%; }
+  body{ overflow-x:hidden; }
+
+  @media (max-width: 600px){
+    header.hero{ padding:36px 16px 24px; }
+    header.hero h1{ margin:0 0 10px; }
+    header.hero p{ font-size:13px; }
+    nav.tabs{ font-size:11px; -webkit-overflow-scrolling:touch; }
+    nav.tabs a{ padding:11px 12px; font-size:11.5px; }
+    main{ padding:24px 14px 70px; }
+    .catlabel{ margin:34px 0 14px; flex-wrap:wrap; }
+    .catlabel h2{ font-size:17px; }
+    .grid{ grid-template-columns:1fr; gap:14px; }
+    .mgrid{ grid-template-columns:1fr; gap:12px; }
+    .card .stage, .mstage{ height:52vw; max-height:220px; }
+    .frag pre{ font-size:11.5px; }
+    section[id]{ scroll-margin-top:44px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">Camera Grammar Reference · v4</div>
+  <h1>카메라 &amp; 구도 레퍼런스</h1>
+  <p>eyecannndy.com 라이브러리 전체를 훑어 <b>132개 기법</b>을 정리한 범용 참고 자료 — 실제 예시 영상(애니메이션 webp)을 원본 CDN에서 직접 로드.
+  각 카드의 <b>PROMPT</b> 문장은 특정 장르에 묶이지 않은 순수 카메라·구도·효과 지시문이다 —
+  이미지·영상 생성 프롬프트를 쓸 때 <b>내가 원하는 장면/피사체 설명 앞에 그대로 붙여넣는</b> 용도다.</p>
+  <div class="src">원본: <a href="https://eyecannndy.com" target="_blank">eyecannndy.com</a> — Visual Technique Library (예시 영상은 원본 사이트 CDN에서 직접 로드됨)</div>
+</header>
+
+<nav class="tabs">
+  <a href="#cat-A">A · 카메라 무브</a>
+  <a href="#cat-B">B · 앵글 &amp; 구도</a>
+  <a href="#cat-C">C · 줌 &amp; 임팩트</a>
+  <a href="#cat-D">D · 편집 &amp; 전환</a>
+  <a href="#cat-E">E · 카메라 무브 확장</a>
+  <a href="#cat-F">F · 렌즈 &amp; 옵틱</a>
+  <a href="#cat-G">G · 속도 &amp; 시간</a>
+  <a href="#cat-H">H · 편집 &amp; 전환 확장</a>
+  <a href="#cat-I">I · VFX &amp; 스타일</a>
+  <a href="#cat-J">J · 인물·시점·무드</a>
+</nav>
+
+<main>
+
+  <!-- CATEGORY A: 카메라 무브 -->
+  <section id="cat-A">
+    <div class="catlabel"><span class="n">A</span><h2>카메라 무브</h2><span class="c">Camera Moves</span></div>
+    <div class="grid">
+
+      <div class="card">
+        <div class="stage"><div class="idx">01</div><a href="https://eyecannndy.com/technique/bolt-cam" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2023/12/24/261703408961.webp" loading="lazy"></a><div class="src-tag">eyecannndy.com</div></div>
+        <div class="body">
+          <h3>Bolt Cam</h3>
+          <div class="kr">볼트캠 — 초고속 모터라이즈드 암</div>
+          <p class="def">초당 6피트로 움직이는 모터 구동 카메라 암. 극단적으로 빠른 위치 전환이 가능해 충격적인 리빌에 쓴다.</p>
+          <div class="use">쓰는 곳: 갑작스러운 반전·리빌, 임팩트 순간의 시점 전환.</div>
+          <div class="frag video"><span class="lbl">PROMPT — 내용 앞에 붙이기</span><pre>Ultra-fast motorized camera arm move, snapping from one framing to a completely different angle in well under a second, heavy directional motion blur, landing hard on the new angle with a slight settle.</pre></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="stage"><div class="idx">02</div><a href="https://eyecannndy.com/technique/dolly-zoom" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/01/06/261704528059.webp" loading="lazy"></a><div class="src-tag">eyecannndy.com</div></div>
+        <div class="body">
+          <h3>Dolly Zoom</h3>
+          <div class="kr">돌리줌 — 버티고 샷</div>
+          <p class="def">돌리는 뒤로 빠지고 줌은 당기는(혹은 반대) 반대 움직임. 피사체 크기는 고정된 채 배경만 왜곡되며 압축·팽창한다.</p>
+          <div class="use">쓰는 곳: 충격·깨달음·현기증 같은 심리적 반전의 순간.</div>
+          <div class="frag video"><span class="lbl">PROMPT — 내용 앞에 붙이기</span><pre>Vertigo dolly-zoom effect: the camera physically pushes back while the lens zooms in (or the reverse), keeping the subject's size locked in frame while the background warps, stretches and compresses around them.</pre></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="stage"><div class="idx">03</div><a href="https://eyecannndy.com/technique/double-dolly" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2025/02/10/261739172109.webp" loading="lazy"></a><div class="src-tag">eyecannndy.com</div></div>
+        <div class="body">
+          <h3>Double Dolly</h3>
+          <div class="kr">더블 돌리 — 이동+버티고 결합</div>
+          <p class="def">돌리줌에 실제 카메라·피사체 이동까지 더한 변형. 정지된 버티고가 아니라 움직이는 버티고.</p>
+          <div class="use">쓰는 곳: 이동 중에도 배경이 계속 왜곡되는 복합 무브가 필요할 때.</div>
+          <div class="frag video"><span class="lbl">PROMPT — 내용 앞에 붙이기</span><pre>Dolly-zoom combined with continuous camera and subject travel through the space — the background keeps stretching and compressing while both camera and subject keep moving forward, a moving vertigo shot.</pre></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="stage"><div class="idx">04</div><a href="https://eyecannndy.com/technique/whip-pan" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2023/12/19/261702949462.webp" loading="lazy"></a><div class="src-tag">eyecannndy.com</div></div>
+        <div class="body">
+          <h3>Whip Pan</h3>
+          <div class="kr">휩팬 — 초고속 좌우 팬</div>
+          <p class="def">카메라가 매우 빠르게 좌우로 팬하며 모션블러 스트릭을 남긴다. 마치 한 테이크로 이어진 것처럼 두 장면을 연결.</p>
+          <div class="use">쓰는 곳: 한 컷 안에서 서로 다른 두 피사체를 끊김 없이 연결할 때.</div>
+          <div class="frag video"><span class="lbl">PROMPT — 내용 앞에 붙이기</span><pre>Camera whips hard left-to-right at extreme speed, motion streaking the frame into an almost unbroken blur, snapping to a hard stop on the next subject — feels like one continuous take linking two subjects.</pre></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="stage"><div class="idx">05</div><a href="https://eyecannndy.com/technique/lazy-susan" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/01/07/261704620933.webp" loading="lazy"></a><div class="src-tag">eyecannndy.com</div></div>
+        <div class="body">
+          <h3>Lazy Susan</h3>
+          <div class="kr">레이지 수잔 — 중심축 팬</div>
+          <p class="def">카메라를 테이블/원의 중심에 두고 좌우로 팬하며 인물·오브제를 차례로 비춘다. 회전 트레이 위에 놓인 듯한 느낌.</p>
+          <div class="use">쓰는 곳: 한 중심점 주위에 배치된 여러 인물·오브제를 컷 없이 순서대로 보여줄 때.</div>
+          <div class="frag video"><span class="lbl">PROMPT — 내용 앞에 붙이기</span><pre>Camera pinned at a fixed center point, panning slowly around it in one unbroken move, revealing the surrounding subjects and objects in sequence along the same axis.</pre></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="stage"><div class="idx">06</div><a href="https://eyecannndy.com/technique/conveyor" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2023/12/18/261702865755.webp" loading="lazy"></a><div class="src-tag">eyecannndy.com</div></div>
+        <div class="body">
+          <h3>Conveyor</h3>
+          <div class="kr">컨베이어 — 슬라이딩 전환</div>
+          <p class="def">컨베이어 벨트처럼 나가는 이미지가 한쪽으로 밀려나고 들어오는 이미지가 반대쪽에서 밀고 들어오는 전환.</p>
+          <div class="use">쓰는 곳: 장소·시간이 바뀌는 컷 전환을 하드컷보다 부드럽게 처리할 때.</div>
+          <div class="frag post"><span class="lbl">EDITING NOTE</span><pre>컷 전환을 하드컷 대신 슬라이드 전환으로: 나가는 이미지가 한쪽으로 밀려나가고 들어오는 이미지가 반대쪽에서 밀고 들어옴 — 편집 단계에서 적용.</pre></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CATEGORY B: 앵글 & 구도 -->
+  <section id="cat-B">
+    <div class="catlabel"><span class="n">B</span><h2>앵글 &amp; 구도</h2><span class="c">Angle &amp; Framing</span></div>
+    <div class="grid">
+
+      <div class="card">
+        <div class="stage"><div class="idx">07</div><a href="https://eyecannndy.com/technique/worms-eye" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2023/12/20/261703054801.webp" loading="lazy"></a><div class="src-tag">eyecannndy.com</div></div>
+        <div class="body">
+          <h3>Worm's-Eye</h3>
+          <div class="kr">웜즈아이 뷰 — 극단적 로우앵글</div>
+          <p class="def">지면에 붙은 카메라가 위를 올려다보는 시점. 대상이 압도적으로 거대하게 솟아 보인다.</p>
+          <div class="use">쓰는 곳: 건물·인물·대상을 가장 위압적으로 크게 보이게 하고 싶을 때.</div>
+          <div class="frag"><span class="lbl">PROMPT — 내용 앞에 붙이기</span><pre>Extreme worm's-eye view: camera resting at ground level looking straight up, verticals converging sharply toward the subject looming overhead, monumental against the sky or ceiling.</pre></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="stage"><div class="idx">08</div><a href="https://eyecannndy.com/technique/low-angle" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/04/261709537638.webp" loading="lazy"></a><div class="src-tag">eyecannndy.com</div></div>
+        <div class="body">
+          <h3>Low Angle</h3>
+          <div class="kr">로우 앵글 — 아이레벨 이하</div>
+          <p class="def">눈높이 아래에서 위를 올려다보는 샷. 대상을 더 크고 지배적으로 보이게 만드는 권력의 구도.</p>
+          <div class="use">쓰는 곳: 대상에게 위압감·권위·존재감을 주고 싶을 때.</div>
+          <div class="frag"><span class="lbl">PROMPT — 내용 앞에 붙이기</span><pre>Camera positioned below eye-level looking up at the subject, making them loom larger and more dominant than the surrounding space.</pre></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="stage"><div class="idx">09</div><a href="https://eyecannndy.com/technique/dutch-angle" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/19/261710824876.webp" loading="lazy"></a><div class="src-tag">eyecannndy.com</div></div>
+        <div class="body">
+          <h3>Dutch Angle</h3>
+          <div class="kr">더치 앵글 — 카메라 틸트</div>
+          <p class="def">카메라를 20~40도 기울여 수평선을 비스듬하게 만든다. 즉각적으로 불안정·불길함을 전달.</p>
+          <div class="use">쓰는 곳: 긴장·불안·비정상성을 프레임 자체로 전달하고 싶을 때.</div>
+          <div class="frag"><span class="lbl">PROMPT — 내용 앞에 붙이기</span><pre>Camera tilted 20-40 degrees off the horizontal axis, horizon line canted, instantly reading as unstable and off-balance.</pre></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="stage"><div class="idx">10</div><a href="https://eyecannndy.com/technique/silhouette" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/01/07/261704620909.webp" loading="lazy"></a><div class="src-tag">eyecannndy.com</div></div>
+        <div class="body">
+          <h3>Silhouette</h3>
+          <div class="kr">실루엣</div>
+          <p class="def">피사체가 밝은 배경 앞에서 디테일 없는 어두운 형체로만 촬영된다. 표정 대신 형태·자세로만 감정을 전달.</p>
+          <div class="use">쓰는 곳: 정체를 감추거나, 표정보다 형태·실루엣으로 감정을 전달하고 싶을 때.</div>
+          <div class="frag"><span class="lbl">PROMPT — 내용 앞에 붙이기</span><pre>The subject is a pure dark, featureless silhouette against a brighter backlit source — no facial detail, only shape and posture carry the emotion.</pre></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="stage"><div class="idx">11</div><a href="https://eyecannndy.com/technique/shadow-box" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/01/26/261706251823.webp" loading="lazy"></a><div class="src-tag">eyecannndy.com</div></div>
+        <div class="body">
+          <h3>Shadow Box</h3>
+          <div class="kr">섀도우 박스 — 여백 구도</div>
+          <p class="def">프레임을 다 채우지 않고 넓은 빈 공간(어둠) 속에 시각 요소를 작게 배치하는 구도.</p>
+          <div class="use">쓰는 곳: 고립감·여백의 미·미니멀한 정서를 강조하고 싶을 때.</div>
+          <div class="frag"><span class="lbl">PROMPT — 내용 앞에 붙이기</span><pre>Compose with large areas of empty negative space — the subject occupies only a small fraction of the frame, the rest left deliberately unfilled.</pre></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="stage"><div class="idx">12</div><a href="https://eyecannndy.com/technique/fixed-camera" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/04/261709538350.webp" loading="lazy"></a><div class="src-tag">eyecannndy.com</div></div>
+        <div class="body">
+          <h3>Fixed Cam</h3>
+          <div class="kr">픽스드 캠 — 오브제 고정 카메라</div>
+          <p class="def">카메라가 특정 오브제에 고정된 것처럼 움직인다. 배경은 계속 바뀌어도 그 오브제만은 프레임 안에 일정하게 유지된다.</p>
+          <div class="use">쓰는 곳: 특정 오브제를 반복되는 시각적 앵커로 계속 등장시키고 싶을 때.</div>
+          <div class="frag video"><span class="lbl">PROMPT — 내용 앞에 붙이기</span><pre>Camera rigidly fixed to a specific moving object, keeping it locked in the same position within the frame while the background blurs and shifts behind it.</pre></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="stage"><div class="idx">13</div><a href="https://eyecannndy.com/technique/as-object" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/01/04/261704372378.webp" loading="lazy"></a><div class="src-tag">eyecannndy.com</div></div>
+        <div class="body">
+          <h3>Object POV</h3>
+          <div class="kr">오브제 POV — 사물 시점</div>
+          <p class="def">인물이 카메라를 정면으로 보지만, 실제로는 렌즈가 거울·물웅덩이 같은 세계 속 사물인 척하는 기법. 4번째 벽 파괴와는 다르다.</p>
+          <div class="use">쓰는 곳: 거울·수면 등에 비친 자신을 마주하는 반사·대면 장면.</div>
+          <div class="frag"><span class="lbl">PROMPT — 내용 앞에 붙이기</span><pre>The subject stares directly into the lens as if it were a mirror or a pool of water — the audience shares the object's perspective, not a true fourth-wall break.</pre></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="mgrid" style="margin-top:18px;">
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/ground-shot" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/01/13/261705173516.webp" loading="lazy"></a></div><div class="mbody"><h4>Ground Level <span class="mkr">그라운드 레벨</span></h4><p class="mdef">지면에서 30~60cm 높이의 낮은 시점(웜즈아이보다는 완만).</p><p class="mtip"><b>PROMPT</b> — Camera hovers low, about a foot off the ground, watching the scene at ground level.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/overhead" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/04/261709532127.webp" loading="lazy"></a></div><div class="mbody"><h4>Overhead <span class="mkr">오버헤드</span></h4><p class="mdef">피사체 바로 위에서 수직으로 내려다봄.</p><p class="mtip"><b>PROMPT</b> — Directly overhead top-down shot, looking straight down on the scene.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/central-framing" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/02/04/261707021536.webp" loading="lazy"></a></div><div class="mbody"><h4>Central Framing <span class="mkr">센트럴 프레이밍</span></h4><p class="mdef">피사체를 정확히 프레임 중앙에 배치해 대칭 강조.</p><p class="mtip"><b>PROMPT</b> — Dead-center symmetrical framing of the subject, emphasizing balance and order.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/two-shot" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/26/261711436397.webp" loading="lazy"></a></div><div class="mbody"><h4>Two Shot <span class="mkr">투 샷</span></h4><p class="mdef">두 인물이 한 프레임 안에 (나란히 또는 전후경으로).</p><p class="mtip"><b>PROMPT</b> — Two-shot framing both subjects in the same frame, one sharp in the foreground, the other visible behind.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/over-the-shoulder" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/10/261710032234.webp" loading="lazy"></a></div><div class="mbody"><h4>Over the Shoulder <span class="mkr">오버 더 숄더</span></h4><p class="mdef">한 인물의 어깨 너머로 상대를 비춤.</p><p class="mtip"><b>PROMPT</b> — Over-the-shoulder shot from behind one subject, framing the other beyond them.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/profile-shot" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/01/12/261705031055.webp" loading="lazy"></a></div><div class="mbody"><h4>Profile <span class="mkr">프로필 샷</span></h4><p class="mdef">얼굴이 완전히 옆모습으로 보이는 구도.</p><p class="mtip"><b>PROMPT</b> — Hard profile shot, the subject's face turned fully to the side.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/wide-shot" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2023/12/20/261703056769.webp" loading="lazy"></a></div><div class="mbody"><h4>Wide Shot <span class="mkr">와이드 샷</span></h4><p class="mdef">인물과 배경 전체를 넓게 담는 샷.</p><p class="mtip"><b>PROMPT</b> — Wide shot placing the subject small within a large environment, emphasizing scale.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/tableau-shots" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/01/29/261706566256.webp" loading="lazy"></a></div><div class="mbody"><h4>Tableau <span class="mkr">타블로</span></h4><p class="mdef">회화처럼 정교하게 짜인 정지된 구도.</p><p class="mtip"><b>PROMPT</b> — A carefully arranged, painterly tableau composition — everyone and everything frozen in place.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/void" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/24/261711256303.webp" loading="lazy"></a></div><div class="mbody"><h4>Void <span class="mkr">보이드</span></h4><p class="mdef">피사체 외 모든 것이 텅 빈 암흑 공간.</p><p class="mtip"><b>PROMPT</b> — The subject floats alone in a featureless empty void, all context stripped away.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/vignette" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/06/261709716787.webp" loading="lazy"></a></div><div class="mbody"><h4>Vignette <span class="mkr">비네트</span></h4><p class="mdef">프레임 가장자리가 어둡게 좁혀지는 효과.</p><p class="mtip"><b>PROMPT</b> — Heavy vignette darkening the frame edges, drawing focus toward the center.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/reflections" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/13/261710316254.webp" loading="lazy"></a></div><div class="mbody"><h4>Reflections <span class="mkr">리플렉션</span></h4><p class="mdef">수면·거울 등에 비친 상을 활용.</p><p class="mtip"><b>PROMPT</b> — The subject's reflection is visible in water or glass, mirroring the scene above.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/surrealism" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2023/12/20/261703059338.webp" loading="lazy"></a></div><div class="mbody"><h4>Magical Realism <span class="mkr">매지컬 리얼리즘</span></h4><p class="mdef">일상적 현실 속에 마법적 요소가 자연스럽게 섞임.</p><p class="mtip"><b>PROMPT</b> — An impossible or magical element appears within an otherwise ordinary, realistic setting, treated as unremarkable.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/epiphany-shot" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/19/261710824754.webp" loading="lazy"></a></div><div class="mbody"><h4>Epiphany Shot <span class="mkr">에피퍼니 샷</span></h4><p class="mdef">인물이 갑자기 깨닫는 순간을 포착하는 샷.</p><p class="mtip"><b>PROMPT</b> — Capture the exact instant of sudden realization on the subject's face.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/high-angle" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/02/18/261708236813.webp" loading="lazy"></a></div><div class="mbody"><h4>High Angle <span class="mkr">하이 앵글</span></h4><p class="mdef">위에서 아래로 내려다보는 앵글, 취약함을 암시.</p><p class="mtip"><b>PROMPT</b> — High angle looking down on the subject, making them appear smaller and more vulnerable.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/focal-focus" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/02/27/261709022589.webp" loading="lazy"></a></div><div class="mbody"><h4>Shallow Focus <span class="mkr">얕은 심도</span></h4><p class="mdef">특정 피사체만 선명하고 나머지는 흐림.</p><p class="mtip"><b>PROMPT</b> — Razor-thin shallow depth of field, only the subject in sharp focus, everything else a soft blur.</p></div></div>
+    </div>
+  </section>
+
+  <!-- CATEGORY C: 줌 & 임팩트 -->
+  <section id="cat-C">
+    <div class="catlabel"><span class="n">C</span><h2>줌 &amp; 임팩트</h2><span class="c">Zoom &amp; Impact</span></div>
+    <div class="grid">
+
+      <div class="card">
+        <div class="stage"><div class="idx">14</div><a href="https://eyecannndy.com/technique/zoom-in#crash-zoom" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2023/12/17/261702853421.webp" loading="lazy"></a><div class="src-tag">eyecannndy.com</div></div>
+        <div class="body">
+          <h3>Crash Zoom</h3>
+          <div class="kr">크래시 줌 — 충격 펀치인</div>
+          <p class="def">초고속 펀치인으로 충격을 강조하는 줌. Zoom 계열 중 가장 폭력적인 버전.</p>
+          <div class="use">쓰는 곳: 갑작스러운 등장·반전·놀람의 순간.</div>
+          <div class="frag video"><span class="lbl">PROMPT — 내용 앞에 붙이기</span><pre>Violent crash-zoom punch-in — near-instant snap from wide to tight close-up, motion blur streaking inward, hard stop on impact.</pre></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="stage"><div class="idx">15</div><a href="https://eyecannndy.com/technique/zoom-in#infinite-zoom" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/01/10/261704857000.webp" loading="lazy"></a><div class="src-tag">eyecannndy.com</div></div>
+        <div class="body">
+          <h3>Infinite Zoom</h3>
+          <div class="kr">인피니트 줌 — 무한 확대 전환</div>
+          <p class="def">한 디테일로 끝없이 파고들어 다음 장면으로 넘어가는 전환 장치.</p>
+          <div class="use">쓰는 곳: 한 디테일(눈·틈·구멍)을 통해 다음 장면·다음 장소로 전환할 때.</div>
+          <div class="frag video"><span class="lbl">PROMPT — 전환용, 내용 앞에 붙이기</span><pre>Relentless zoom that plunges into a single small detail until it fills the frame and swallows it to black — a built-in hand-off into the next cut.</pre></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="stage"><div class="idx">16</div><a href="https://eyecannndy.com/technique/motion-blur" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/02/20/261708472556.webp" loading="lazy"></a><div class="src-tag">eyecannndy.com</div></div>
+        <div class="body">
+          <h3>Motion Blur</h3>
+          <div class="kr">모션 블러</div>
+          <p class="def">피사체나 카메라가 셔터 속도보다 빠르게 움직일 때 생기는 스트릭 블러. 속도와 에너지를 전달.</p>
+          <div class="use">쓰는 곳: 빠른 움직임의 속도감·에너지를 강조하고 싶을 때.</div>
+          <div class="frag video"><span class="lbl">PROMPT — 내용 앞에 붙이기</span><pre>Heavy directional motion blur streaking off the subject as it moves — pure kinetic energy, never a crisp freeze-frame.</pre></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="stage"><div class="idx">17</div><a href="https://eyecannndy.com/technique/echo-printing" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/13/261710313059.webp" loading="lazy"></a><div class="src-tag">eyecannndy.com</div></div>
+        <div class="body">
+          <h3>Echo Print</h3>
+          <div class="kr">에코 프린트 — 잔상 트레일</div>
+          <p class="def">움직이는 피사체 뒤로 반투명 잔상이 한 박자 늦게 따라붙었다가 본체와 다시 합쳐지는 모션블러 변형(아코디언 블러).</p>
+          <div class="use">쓰는 곳: 빠른 동작 뒤에 스타일리시한 잔상 트레일을 남기고 싶을 때.</div>
+          <div class="frag video"><span class="lbl">PROMPT — 내용 앞에 붙이기</span><pre>As the subject moves, leave a translucent echo trail of the body lagging half a beat behind before it snaps back and merges with the main form — accordion-style motion echo, fading afterimage layers.</pre></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CATEGORY D: 편집 & 전환 -->
+  <section id="cat-D">
+    <div class="catlabel"><span class="n">D</span><h2>편집 &amp; 전환</h2><span class="c">Editing &amp; Transition</span></div>
+    <div class="grid">
+
+      <div class="card">
+        <div class="stage"><div class="idx">18</div><a href="https://eyecannndy.com/technique/flash-cut" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/01/12/261705037397.webp" loading="lazy"></a><div class="src-tag">eyecannndy.com</div></div>
+        <div class="body">
+          <h3>Flash Cut</h3>
+          <div class="kr">플래시컷 — 초고속 연속 인서트</div>
+          <p class="def">여러 장의 이미지를 빠르게 연속으로 깜빡이듯 붙이는 초고속 매치컷. 최면적·불안정한 인상. (광과민성 주의)</p>
+          <div class="use">쓰는 곳: 환영·기억·불안한 감정이 침입하는 서브리미널 인서트.</div>
+          <div class="frag post"><span class="lbl">EDITING NOTE</span><pre>본 컷 사이사이에 관련 이미지 3~5장을 각 2~3프레임(0.08~0.12초)씩 삽입, 플리커 간격을 불규칙하게 — 편집 단계에서 적용.</pre></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="stage"><div class="idx">19</div><a href="https://eyecannndy.com/technique/match-cut" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/01/06/261704512088.webp" loading="lazy"></a><div class="src-tag">eyecannndy.com</div></div>
+        <div class="body">
+          <h3>Match Cut</h3>
+          <div class="kr">매치컷</div>
+          <p class="def">서로 다른 두 장면을 형태·움직임의 유사성으로 매끄럽게 이어붙이는 편집 기법.</p>
+          <div class="use">쓰는 곳: 두 컷을 형태·움직임으로 자연스럽게 이어붙이고 싶을 때.</div>
+          <div class="frag post"><span class="lbl">EDITING / CUT DESIGN NOTE</span><pre>이전 컷의 마지막 프레임 속 형태·위치·움직임이 다음 컷의 첫 프레임과 겹치도록 두 컷을 설계.</pre></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="stage"><div class="idx">20</div><a href="https://eyecannndy.com/technique/quick-cuts" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/05/20/261716236020.webp" loading="lazy"></a><div class="src-tag">eyecannndy.com</div></div>
+        <div class="body">
+          <h3>Quick Cuts</h3>
+          <div class="kr">퀵컷 — 프레네틱 컷 리듬</div>
+          <p class="def">한 샷에서 다음 샷으로 광적으로 빠르게 전환하는 편집. 에드거 라이트가 즐겨 쓰는 리듬.</p>
+          <div class="use">쓰는 곳: 클라이맥스 직전 모멘텀·긴장감을 빠르게 쌓고 싶을 때.</div>
+          <div class="frag post"><span class="lbl">EDITING NOTE</span><pre>0.5초 내외의 파편적 컷을 연속 배치해 임팩트 직전 리듬을 가속 — 편집 단계에서 적용.</pre></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="stage"><div class="idx">21</div><a href="https://eyecannndy.com/technique/object-portal" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/01/12/261705099775.webp" loading="lazy"></a><div class="src-tag">eyecannndy.com</div></div>
+        <div class="body">
+          <h3>Object Portal</h3>
+          <div class="kr">오브제 포탈 — 사물을 통한 전환</div>
+          <p class="def">평범한 오브제를 다른 장면·세계로 넘어가는 통로처럼 사용하는 전환 기법.</p>
+          <div class="use">쓰는 곳: 장면·시간대가 바뀌는 것을 하나의 오브제를 통해 매끄럽게 연결할 때.</div>
+          <div class="frag video"><span class="lbl">PROMPT — 전환용, 내용 앞에 붙이기</span><pre>Push through a mundane object in the frame — a mirror, a doorway, an eye — and it becomes the transition into the next location or timeframe, a seamless hand-off.</pre></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="stage"><div class="idx">22</div><a href="https://eyecannndy.com/technique/split-screen" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/01/10/261704857319.webp" loading="lazy"></a><div class="src-tag">eyecannndy.com</div></div>
+        <div class="body">
+          <h3>Split Screen</h3>
+          <div class="kr">스플릿 스크린 — 화면 분할</div>
+          <p class="def">프레임을 여러 구획으로 나눠 극적이거나 정신없는 컷을 만든다. 시선을 분산시킨다.</p>
+          <div class="use">쓰는 곳: 같은 순간 벌어지는 두 가지 행동을 나란히 보여주고 싶을 때.</div>
+          <div class="frag post"><span class="lbl">EDITING NOTE</span><pre>프레임을 세로 2~3분할해 서로 다른 두 행동을 동시에 배치, 두 패널의 톤·조명을 통일하고 컷 리듬은 빠르게 — 편집 단계에서 적용.</pre></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="stage"><div class="idx">23</div><a href="https://eyecannndy.com/technique/ultra-wide-zero-d" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/06/261709715882.webp" loading="lazy"></a><div class="src-tag">eyecannndy.com</div></div>
+        <div class="body">
+          <h3>Ultra Wide</h3>
+          <div class="kr">울트라 와이드 (제로 디스토션)</div>
+          <p class="def">가장자리 왜곡이 적은 초광각 렌즈로 매우 넓은 화각을 담는다. 스케일과 깊이를 과장.</p>
+          <div class="use">쓰는 곳: 넓은 공간과 그 안의 작은 인물로 스케일 대비를 강조하는 설정샷.</div>
+          <div class="frag"><span class="lbl">PROMPT — 내용 앞에 붙이기</span><pre>Ultra-wide rectilinear lens, minimal barrel distortion at the edges, exaggerating the scale of the environment around a small distant figure — vast negative space dwarfing the subject.</pre></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="stage"><div class="idx">24</div><a href="https://eyecannndy.com/technique/locked-on" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/01/10/261704860577.webp" loading="lazy"></a><div class="src-tag">eyecannndy.com</div></div>
+        <div class="body">
+          <h3>Locked-On</h3>
+          <div class="kr">락드온 — 고정점 회전</div>
+          <p class="def">피사체의 한 지점이 프레임 중앙에 고정된 채, 카메라(혹은 배경)가 그 점을 축으로 계속 회전·추적한다.</p>
+          <div class="use">쓰는 곳: 한 피사체를 중심에 고정하고 주변만 요동치는 몰입감·현기증을 주고 싶을 때.</div>
+          <div class="frag video"><span class="lbl">PROMPT — 내용 앞에 붙이기</span><pre>Locked-on effect: the subject stays pinned dead-center in frame while the surrounding environment spins and warps around that fixed point.</pre></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="stage"><div class="idx">25</div><a href="https://eyecannndy.com/technique/step-printing" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/01/29/261706500582.webp" loading="lazy"></a><div class="src-tag">eyecannndy.com</div></div>
+        <div class="body">
+          <h3>Step-Print</h3>
+          <div class="kr">스텝프린팅 — 저프레임 스터터 슬로우모션</div>
+          <p class="def">개별 프레임을 여러 번 인화해 프레임레이트를 낮추는 아날로그 기법. 매끈한 슬로우모션이 아니라 뚝뚝 끊기는 스터터 느낌.</p>
+          <div class="use">쓰는 곳: 매끈한 슬로모 대신 의도적으로 끊기는 리듬감을 주고 싶을 때.</div>
+          <div class="frag video"><span class="lbl">PROMPT — 내용 앞에 붙이기</span><pre>Stuttering low-frame-rate slow motion, as if individual frames were printed multiple times — deliberately choppy movement, each pose held a beat before jumping to the next.</pre></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="stage"><div class="idx">+</div><a href="https://eyecannndy.com/technique/double-exposure" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/01/04/261704334160.webp" loading="lazy"></a><div class="src-tag">eyecannndy.com</div></div>
+        <div class="body">
+          <h3>Double Exposure</h3>
+          <div class="kr">더블 익스포저 — 이중 노출 합성</div>
+          <p class="def">두 이미지를 겹쳐 초현실적인 몽환 합성을 만든다. 인물 실루엣에 다른 이미지를 투과시키는 방식이 대표적.</p>
+          <div class="use">쓰는 곳: 한 인물 안에 다른 이미지·기억·상징을 겹쳐 압축해서 보여주고 싶을 때.</div>
+          <div class="frag"><span class="lbl">PROMPT — 내용 앞에 붙이기</span><pre>Double-exposure composite: the subject's silhouette is transparent and filled with a second layer of imagery, screen-blended at roughly 50% opacity, both layers sharing the same light direction.</pre></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CATEGORY E: 카메라 무브 확장 -->
+  <section id="cat-E">
+    <div class="catlabel"><span class="n">E</span><h2>카메라 무브 확장</h2><span class="c">More Camera Moves</span></div>
+    <div class="mgrid">
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/aerial" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/02/27/261709018151.webp" loading="lazy"></a></div><div class="mbody"><h4>Aerial <span class="mkr">항공 촬영</span></h4><p class="mdef">드론·항공기로 하늘에서 촬영.</p><p class="mtip"><b>PROMPT</b> — Aerial drone shot descending slowly over the scene from high above, revealing its full scale.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/arc-movement" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/01/12/261705098919.webp" loading="lazy"></a></div><div class="mbody"><h4>Arc <span class="mkr">아크 무브</span></h4><p class="mdef">피사체 주위를 원호로 도는 카메라.</p><p class="mtip"><b>PROMPT</b> — Camera arcs slowly around the subject in a smooth circular move, foreground elements sweeping past.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/camera-roll" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2023/12/23/261703364350.webp" loading="lazy"></a></div><div class="mbody"><h4>Camera Roll <span class="mkr">카메라 롤</span></h4><p class="mdef">화면 전체가 축을 따라 180도 회전.</p><p class="mtip"><b>PROMPT</b> — The entire frame rolls a full 180 degrees around its central axis.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/dolly-shot" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/01/01/261704114041.webp" loading="lazy"></a></div><div class="mbody"><h4>Dolly <span class="mkr">돌리 (푸시인)</span></h4><p class="mdef">트랙 위 카메라가 피사체로 다가가거나 멀어짐.</p><p class="mtip"><b>PROMPT</b> — Slow, deliberate dolly push-in toward the subject, smooth and steady.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/fpv-drone" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/01/09/261704821205.webp" loading="lazy"></a></div><div class="mbody"><h4>FPV Drone <span class="mkr">FPV 드론</span></h4><p class="mdef">드론 1인칭 시점의 저고도 고속 비행.</p><p class="mtip"><b>PROMPT</b> — FPV drone shot ripping low and fast through the space, weaving between obstacles.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/pan" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/09/12/261726175733.webp" loading="lazy"></a></div><div class="mbody"><h4>Pan <span class="mkr">팬</span></h4><p class="mdef">카메라 고정, 좌우로 수평 회전.</p><p class="mtip"><b>PROMPT</b> — Slow horizontal pan across the scene, camera fixed in place.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/pedestal" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/25/261711343806.webp" loading="lazy"></a></div><div class="mbody"><h4>Pedestal <span class="mkr">페데스탈</span></h4><p class="mdef">카메라가 수직으로 상승·하강.</p><p class="mtip"><b>PROMPT</b> — Camera pedestals straight up (or down), rising smoothly to reveal more of the scene.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/tilt" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/01/13/261705128422.webp" loading="lazy"></a></div><div class="mbody"><h4>Tilt <span class="mkr">틸트</span></h4><p class="mdef">카메라 고정, 상하로 수직 회전.</p><p class="mtip"><b>PROMPT</b> — Camera fixed in place, tilting slowly upward (or downward) to reveal the subject.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/tracking" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/12/261710225646.webp" loading="lazy"></a></div><div class="mbody"><h4>Tracking <span class="mkr">트래킹</span></h4><p class="mdef">피사체를 따라 이동하며 계속 프레임에 담음.</p><p class="mtip"><b>PROMPT</b> — Camera tracks alongside the moving subject, keeping pace with it throughout.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/trucking" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/04/261709537697.webp" loading="lazy"></a></div><div class="mbody"><h4>Trucking <span class="mkr">트러킹</span></h4><p class="mdef">피사체와 나란히 좌우로 이동.</p><p class="mtip"><b>PROMPT</b> — Camera trucks sideways in parallel with the subject as it moves.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/wandering" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/13/261710362976.webp" loading="lazy"></a></div><div class="mbody"><h4>Wandering <span class="mkr">원더링</span></h4><p class="mdef">누군가 걷는 듯 공간을 통과하는 카메라.</p><p class="mtip"><b>PROMPT</b> — Camera drifts through the space as if walking through it, weaving naturally around obstacles.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/omnidirectional" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/01/07/261704613976.webp" loading="lazy"></a></div><div class="mbody"><h4>Omnidirectional <span class="mkr">360 촬영</span></h4><p class="mdef">360도 전방위를 담는 구형 시점.</p><p class="mtip"><b>PROMPT</b> — Full 360-degree spherical view from a fixed center point.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/pass-through" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/05/261709635545.webp" loading="lazy"></a></div><div class="mbody"><h4>Pass Through <span class="mkr">패스 스루</span></h4><p class="mdef">카메라가 물체·인물을 관통하듯 통과.</p><p class="mtip"><b>PROMPT</b> — Camera passes directly through an object or figure in the frame, continuing into the space beyond.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/shaky-cam" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/01/27/261706399330.webp" loading="lazy"></a></div><div class="mbody"><h4>Handheld <span class="mkr">핸드헬드</span></h4><p class="mdef">손으로 든 듯한 흔들림이 있는 카메라.</p><p class="mtip"><b>PROMPT</b> — Raw handheld camera movement, natural shake and slight instability, documentary-style.</p></div></div>
+    </div>
+  </section>
+
+  <!-- CATEGORY F: 렌즈 & 옵틱 -->
+  <section id="cat-F">
+    <div class="catlabel"><span class="n">F</span><h2>렌즈 &amp; 옵틱</h2><span class="c">Lens &amp; Optics</span></div>
+    <div class="mgrid">
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/fisheye" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/01/09/261704836939.webp" loading="lazy"></a></div><div class="mbody"><h4>Fisheye <span class="mkr">피시아이</span></h4><p class="mdef">가장자리가 둥글게 왜곡되는 초광각.</p><p class="mtip"><b>PROMPT</b> — Fisheye lens distortion, edges bulging outward in a circular, exaggerated wide-angle warp.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/tilt-shift" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2023/12/31/261703993765.webp" loading="lazy"></a></div><div class="mbody"><h4>Tilt Shift <span class="mkr">틸트시프트</span></h4><p class="mdef">피사체를 미니어처처럼 보이게 하는 렌즈.</p><p class="mtip"><b>PROMPT</b> — Tilt-shift miniature effect, making the scene look like a small-scale model.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/split-diopter" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2023/12/25/261703502401.webp" loading="lazy"></a></div><div class="mbody"><h4>Split Diopter <span class="mkr">스플릿 디옵터</span></h4><p class="mdef">한 프레임 안 서로 다른 거리의 두 피사체 모두 초점.</p><p class="mtip"><b>PROMPT</b> — Split-diopter shot keeping both a close foreground subject and a distant background subject in sharp focus simultaneously.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/probe-lens" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2023/12/23/261703306920.webp" loading="lazy"></a></div><div class="mbody"><h4>Probe <span class="mkr">프로브 렌즈</span></h4><p class="mdef">아주 가까이 파고드는 초근접 매크로 렌즈.</p><p class="mtip"><b>PROMPT</b> — Probe lens creeping extremely close along the surface of the subject, extreme macro detail.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/slit-scan" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/02/21/261708509108.webp" loading="lazy"></a></div><div class="mbody"><h4>Slit-Scan <span class="mkr">슬릿스캔</span></h4><p class="mdef">좁은 슬릿으로 스캔하듯 왜곡된 시간·형태 표현.</p><p class="mtip"><b>PROMPT</b> — Slit-scan distortion, the image smearing and warping as if scanned through a narrow slit over time.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/magnification" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/10/261710030897.webp" loading="lazy"></a></div><div class="mbody"><h4>Magnification <span class="mkr">매그니피케이션</span></h4><p class="mdef">돋보기 프레임 안에 매크로샷을 담는 기법.</p><p class="mtip"><b>PROMPT</b> — A magnifying-glass frame within the shot holds a macro close-up of a small detail.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/scale-shift" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/09/261709970169.webp" loading="lazy"></a></div><div class="mbody"><h4>Scale Shift <span class="mkr">스케일 시프트</span></h4><p class="mdef">강제원근으로 크기 착시를 만듦.</p><p class="mtip"><b>PROMPT</b> — Forced-perspective illusion making one object appear impossibly large or small next to another.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/focal-shift" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/25/261711344614.webp" loading="lazy"></a></div><div class="mbody"><h4>Focal Shift <span class="mkr">포컬 시프트</span></h4><p class="mdef">초점이 한 지점에서 다른 지점으로 이동.</p><p class="mtip"><b>PROMPT</b> — Focus racks smoothly from a subject in the foreground to another subject further back in the frame.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/parallax" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/01/12/261705035243.webp" loading="lazy"></a></div><div class="mbody"><h4>Parallax <span class="mkr">패럴랙스</span></h4><p class="mdef">전경·배경이 다른 속도로 움직여 깊이감 형성.</p><p class="mtip"><b>PROMPT</b> — Foreground elements drift faster than the background, creating strong parallax depth.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/halation" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/09/261710023723.webp" loading="lazy"></a></div><div class="mbody"><h4>Halation <span class="mkr">헤일레이션</span></h4><p class="mdef">밝은 부분 주위로 번지는 헤일로 글로우.</p><p class="mtip"><b>PROMPT</b> — Heavy halation bloom around bright light sources, a soft filmic glow bleeding into the surrounding image.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/haze" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/05/13/261715641988.webp" loading="lazy"></a></div><div class="mbody"><h4>Haze <span class="mkr">헤이즈</span></h4><p class="mdef">부드럽게 흐릿한 몽환적 톤.</p><p class="mtip"><b>PROMPT</b> — Soft hazy diffusion over the whole image, dreamlike and gently out of focus.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/hard-light" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2023/12/20/261703048367.webp" loading="lazy"></a></div><div class="mbody"><h4>Hard Light <span class="mkr">하드 라이트</span></h4><p class="mdef">경계가 뚜렷한 강한 직사광.</p><p class="mtip"><b>PROMPT</b> — Hard, sharp-edged directional light with high contrast and crisp shadow lines.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/light-flash" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/01/04/261704342082.webp" loading="lazy"></a></div><div class="mbody"><h4>Light Flash <span class="mkr">라이트 플래시</span></h4><p class="mdef">순간적인 광원 플래시가 프레임을 삼킴.</p><p class="mtip"><b>PROMPT</b> — A sudden flash of light whites out the entire frame for an instant.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/spotlight" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/01/04/261704342253.webp" loading="lazy"></a></div><div class="mbody"><h4>Spotlight <span class="mkr">스포트라이트</span></h4><p class="mdef">한 지점만 밝히고 나머지는 완전한 어둠.</p><p class="mtip"><b>PROMPT</b> — A single hard spotlight isolates the subject against total surrounding darkness.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/night-vision" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/16/261710576125.webp" loading="lazy"></a></div><div class="mbody"><h4>Night Vision <span class="mkr">나이트 비전</span></h4><p class="mdef">저조도 증폭 촬영, 녹색조 노이즈.</p><p class="mtip"><b>PROMPT</b> — Grainy green night-vision look, amplified low-light with visible sensor noise.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/thermal" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/07/07/261720345029.webp" loading="lazy"></a></div><div class="mbody"><h4>Thermal <span class="mkr">서멀 이미징</span></h4><p class="mdef">열화상 카메라처럼 온도차를 색으로 표현.</p><p class="mtip"><b>PROMPT</b> — Thermal-imaging color palette, heat signatures rendered as false color across the frame.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/x-ray" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/17/261710662060.webp" loading="lazy"></a></div><div class="mbody"><h4>X-Ray <span class="mkr">엑스레이</span></h4><p class="mdef">뼈대가 비치는 유령 같은 투시 효과.</p><p class="mtip"><b>PROMPT</b> — X-ray-style see-through effect revealing the internal structure beneath the surface.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/underwater" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/19/261710827122.webp" loading="lazy"></a></div><div class="mbody"><h4>Underwater <span class="mkr">수중 촬영</span></h4><p class="mdef">물속에서 촬영된 장면.</p><p class="mtip"><b>PROMPT</b> — Shot fully submerged underwater, light refracting and particles drifting through the water.</p></div></div>
+    </div>
+  </section>
+
+  <!-- CATEGORY G: 속도 & 시간 -->
+  <section id="cat-G">
+    <div class="catlabel"><span class="n">G</span><h2>속도 &amp; 시간</h2><span class="c">Speed &amp; Time</span></div>
+    <div class="mgrid">
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/slow-motion" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/12/261710225532.webp" loading="lazy"></a></div><div class="mbody"><h4>Slow Motion <span class="mkr">슬로우모션</span></h4><p class="mdef">표준보다 느린 재생.</p><p class="mtip"><b>PROMPT</b> — Slow motion, movement stretched out smoothly, every detail lingering.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/undercranking" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/22/261711139246.webp" loading="lazy"></a></div><div class="mbody"><h4>Fast Motion <span class="mkr">패스트모션</span></h4><p class="mdef">표준보다 빠른 재생.</p><p class="mtip"><b>PROMPT</b> — Fast motion, the scene playing back sped up, action condensed and hurried.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/speed-ramping" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/21/261711006010.webp" loading="lazy"></a></div><div class="mbody"><h4>Speed Ramp <span class="mkr">스피드 램프</span></h4><p class="mdef">한 샷 안에서 속도가 슬로우→노멀→패스트로 전환.</p><p class="mtip"><b>PROMPT</b> — Speed ramp within a single shot, transitioning from slow motion into normal or fast speed.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/freeze-frame" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/01/23/261705996589.webp" loading="lazy"></a></div><div class="mbody"><h4>Freeze Frame <span class="mkr">프리즈 프레임</span></h4><p class="mdef">한 프레임에서 완전히 정지.</p><p class="mtip"><b>PROMPT</b> — Freeze frame, motion suddenly stopping dead at the peak of the action.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/stutter" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2025/02/10/261739192960.webp" loading="lazy"></a></div><div class="mbody"><h4>Stutter <span class="mkr">스터터</span></h4><p class="mdef">프레임이 반복·생략되며 뚝뚝 끊기는 움직임.</p><p class="mtip"><b>PROMPT</b> — Stuttering, fragmented motion — frames repeating and skipping in a choppy, jittery rhythm.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/bullet-time" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2023/12/23/261703314154.webp" loading="lazy"></a></div><div class="mbody"><h4>Bullet Time <span class="mkr">불릿타임</span></h4><p class="mdef">시간은 멈추고 카메라만 피사체 주위를 돎.</p><p class="mtip"><b>PROMPT</b> — Time freezes while the camera orbits smoothly around the subject.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/boomerang" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2025/02/10/261739192401.webp" loading="lazy"></a></div><div class="mbody"><h4>Boomerang <span class="mkr">부메랑 루프</span></h4><p class="mdef">순방향-역방향으로 왕복 재생되는 루프.</p><p class="mtip"><b>PROMPT</b> — The clip loops forward then instantly reverses, back and forth endlessly.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/infinite" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/01/30/261706573866.webp" loading="lazy"></a></div><div class="mbody"><h4>Infinite Loop <span class="mkr">무한 루프</span></h4><p class="mdef">끊김 없이 영원히 반복되는 듯한 움직임.</p><p class="mtip"><b>PROMPT</b> — A seamless loop, the motion repeating endlessly with no visible start or end point.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/zoetrope" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2023/12/18/261702859939.webp" loading="lazy"></a></div><div class="mbody"><h4>Zoetrope <span class="mkr">조에트로프</span></h4><p class="mdef">회전 슬릿을 통해 정지 이미지가 움직임으로 보이는 고전 장치.</p><p class="mtip"><b>PROMPT</b> — Zoetrope-style stuttered sequential frames, mechanical and hypnotic.</p></div></div>
+    </div>
+  </section>
+
+  <!-- CATEGORY H: 편집 & 전환 확장 -->
+  <section id="cat-H">
+    <div class="catlabel"><span class="n">H</span><h2>편집 &amp; 전환 확장</h2><span class="c">More Editing &amp; Transition</span></div>
+    <div class="mgrid">
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/jump-cut" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2023/12/24/261703389791.webp" loading="lazy"></a></div><div class="mbody"><h4>Jump Cut <span class="mkr">점프컷</span></h4><p class="mdef">같은 피사체가 시간을 건너뛴 듯 갑자기 전환.</p><p class="mtip"><b>EDITING NOTE</b> — 같은 구도에서 몇 초를 건너뛴 듯 컷을 이어붙여 시간의 단절감을 강조.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/match-motion" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/02/28/261709103719.webp" loading="lazy"></a></div><div class="mbody"><h4>Match Motion <span class="mkr">매치 모션</span></h4><p class="mdef">카메라 움직임이 다음 컷까지 매끄럽게 이어짐.</p><p class="mtip"><b>PROMPT</b> — End the camera move at the exact velocity and direction the next cut begins with, for a seamless hand-off.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/match-split" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/02/08/261707401477.webp" loading="lazy"></a></div><div class="mbody"><h4>Match Split <span class="mkr">매치 스플릿</span></h4><p class="mdef">화면이 나뉘지만 하나의 이어진 이미지처럼 보이는 분할.</p><p class="mtip"><b>EDITING NOTE</b> — 프레임을 반으로 나눠 서로 다른 두 장면이 하나의 풍경처럼 이어지게 합성.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/set-transition" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2023/12/24/261703387296.webp" loading="lazy"></a></div><div class="mbody"><h4>Set Transition <span class="mkr">세트 전환</span></h4><p class="mdef">세트 자체가 다른 형태로 물리적으로 전환됨.</p><p class="mtip"><b>PROMPT</b> — The set itself physically transforms in-camera, walls or elements shifting to reveal a new environment behind them.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/screen-in-screen" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/19/261710832128.webp" loading="lazy"></a></div><div class="mbody"><h4>Screen in Screen <span class="mkr">스크린 인 스크린</span></h4><p class="mdef">프레임 안에 또 다른 화면(액자·거울 등)이 담김.</p><p class="mtip"><b>PROMPT</b> — A frame, mirror, or screen within the shot holds a second, smaller image inside it.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/aspect-ratio-switch" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/05/13/261715643438.webp" loading="lazy"></a></div><div class="mbody"><h4>Ratio Switch <span class="mkr">비율 전환</span></h4><p class="mdef">화면비가 의도적으로 바뀌는 연출.</p><p class="mtip"><b>EDITING NOTE</b> — 특정 장면에서만 화면비를 좁히거나(레터박스) 넓혀서 다른 장면들과 시각적으로 구분.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/cut-ins" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/01/01/261704115165.webp" loading="lazy"></a></div><div class="mbody"><h4>Cut-ins <span class="mkr">컷인</span></h4><p class="mdef">같은 장면 속 더 가까운 디테일로 컷.</p><p class="mtip"><b>EDITING NOTE</b> — 넓은 샷에서 중요한 디테일로 빠르게 컷인.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/transition" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/07/05/261720163386.webp" loading="lazy"></a></div><div class="mbody"><h4>Transitions <span class="mkr">전환 일반</span></h4><p class="mdef">한 샷·장면에서 다음으로 넘어가는 방식 전반.</p><p class="mtip"><b>EDITING NOTE</b> — 장면이 바뀔 때마다 일관된 전환 방식(디졸브·컷·와이프 등)을 정해두면 리듬이 살아난다.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/crash-transition" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/02/28/261709102810.webp" loading="lazy"></a></div><div class="mbody"><h4>Crash Cut <span class="mkr">크래시 컷</span></h4><p class="mdef">크래시 줌과 동시에 다음 장면으로 컷.</p><p class="mtip"><b>PROMPT</b> — Crash-zoom in and cut hard to the next scene at the peak of the zoom, no settle.</p></div></div>
+    </div>
+  </section>
+
+  <!-- CATEGORY I: VFX & 스타일 -->
+  <section id="cat-I">
+    <div class="catlabel"><span class="n">I</span><h2>VFX &amp; 스타일</h2><span class="c">VFX &amp; Style</span></div>
+    <div class="mgrid">
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/datamosh" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/07/05/261720163864.webp" loading="lazy"></a></div><div class="mbody"><h4>Datamosh <span class="mkr">데이터모싱</span></h4><p class="mdef">픽셀 블록이 깨지며 다음 프레임으로 번지는 글리치.</p><p class="mtip"><b>PROMPT</b> — Datamosh-style digital corruption, pixel blocks smearing and bleeding from one frame into the next.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/glitch" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/02/19/261708345235.webp" loading="lazy"></a></div><div class="mbody"><h4>Feedback / Glitch <span class="mkr">글리치</span></h4><p class="mdef">아날로그 노이즈·신호 왜곡 스타일.</p><p class="mtip"><b>PROMPT</b> — Analog CRT-static glitch, signal distortion and noise tearing through the image.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/morphing" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/01/28/261706401449.webp" loading="lazy"></a></div><div class="mbody"><h4>Morphing <span class="mkr">모핑</span></h4><p class="mdef">한 형체가 다른 형체로 매끄럽게 변형.</p><p class="mtip"><b>PROMPT</b> — One form morphs smoothly and continuously into a different form.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/duplication" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/01/15/261705289666.webp" loading="lazy"></a></div><div class="mbody"><h4>Duplication <span class="mkr">듀플리케이션</span></h4><p class="mdef">같은 피사체를 프레임 안에 복제.</p><p class="mtip"><b>PROMPT</b> — The same subject appears multiple times within a single frame.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/transformation" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/18/261710752644.webp" loading="lazy"></a></div><div class="mbody"><h4>Transformation <span class="mkr">트랜스포메이션</span></h4><p class="mdef">한 존재·사물이 다른 것으로 변화.</p><p class="mtip"><b>PROMPT</b> — The subject gradually transforms into something else entirely, on camera.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/masking" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2023/12/24/261703451266.webp" loading="lazy"></a></div><div class="mbody"><h4>Masking <span class="mkr">마스킹</span></h4><p class="mdef">특정 영역만 분리해 합성·효과 적용.</p><p class="mtip"><b>EDITING NOTE</b> — 원하는 부위만 마스킹해서 그 부분에만 별도 효과를 얹는다.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/photogrammetry" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/24/261711257139.webp" loading="lazy"></a></div><div class="mbody"><h4>Photogrammetry <span class="mkr">포토그래메트리</span></h4><p class="mdef">여러 사진을 합쳐 3D 형태로 재구성.</p><p class="mtip"><b>PROMPT</b> — Photogrammetry-style 3D scan look, cold and clinical, geometry slightly imperfect.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/generative" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/02/19/261708338199.webp" loading="lazy"></a></div><div class="mbody"><h4>Generative <span class="mkr">제너레이티브</span></h4><p class="mdef">AI가 생성한 유동적 비주얼.</p><p class="mtip"><b>PROMPT</b> — Ever-shifting, generative visual texture that continuously reshapes itself.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/kaleidoscope" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2023/12/31/261703997863.webp" loading="lazy"></a></div><div class="mbody"><h4>Kaleidoscope <span class="mkr">캘리도스코프</span></h4><p class="mdef">대칭 패턴으로 반복·분할되는 만화경 효과.</p><p class="mtip"><b>PROMPT</b> — Kaleidoscopic symmetry, the image fractured into repeating mirrored patterns.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/pixel-art" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/01/01/261704076080.webp" loading="lazy"></a></div><div class="mbody"><h4>Pixel Art <span class="mkr">픽셀 아트</span></h4><p class="mdef">픽셀 단위로 그려진 레트로 애니메이션 스타일.</p><p class="mtip"><b>PROMPT</b> — Retro pixel-art style, low-resolution blocky graphics.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/stop-motion" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/02/261709340472.webp" loading="lazy"></a></div><div class="mbody"><h4>Stop Motion <span class="mkr">스톱모션</span></h4><p class="mdef">한 프레임씩 조금씩 옮겨 촬영해 움직임을 만듦.</p><p class="mtip"><b>PROMPT</b> — Stop-motion animation feel, slightly jittery frame-by-frame movement.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/traditional" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/02/08/261707407268.webp" loading="lazy"></a></div><div class="mbody"><h4>Animation <span class="mkr">셀 애니메이션</span></h4><p class="mdef">손그림 프레임을 이어붙인 전통 애니메이션.</p><p class="mtip"><b>PROMPT</b> — Traditional hand-drawn cel-animation look.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/video-game" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/02/20/261708401438.webp" loading="lazy"></a></div><div class="mbody"><h4>Video Game <span class="mkr">비디오 게임 룩</span></h4><p class="mdef">게임 그래픽·UI를 모방한 비주얼.</p><p class="mtip"><b>PROMPT</b> — Video-game render aesthetic, complete with in-game UI/HUD elements.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/dreamcore" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/02/04/261707006676.webp" loading="lazy"></a></div><div class="mbody"><h4>Dreamcore <span class="mkr">드림코어</span></h4><p class="mdef">꿈·악몽의 모티프를 쓰는 초현실적 미학.</p><p class="mtip"><b>PROMPT</b> — Dreamcore aesthetic — familiar spaces rendered subtly, unsettlingly wrong, as in a half-remembered dream.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/wierdcore" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/02/04/261707007398.webp" loading="lazy"></a></div><div class="mbody"><h4>Weirdcore <span class="mkr">위어드코어</span></h4><p class="mdef">저화질 아마추어 사진 느낌의 불안한 미학.</p><p class="mtip"><b>PROMPT</b> — Weirdcore aesthetic — low-fidelity, amateur-photo texture with an unsettling, alienating mood.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/stylistic-suck" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/02/21/261708473649.webp" loading="lazy"></a></div><div class="mbody"><h4>Stylistic Suck <span class="mkr">스타일리스틱 석</span></h4><p class="mdef">의도적으로 조악하게 만든 스타일.</p><p class="mtip"><b>PROMPT</b> — Deliberately low-quality, campy production style, embracing the cheesiness.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/dystopian" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/16/261710611880.webp" loading="lazy"></a></div><div class="mbody"><h4>Dystopian <span class="mkr">디스토피안</span></h4><p class="mdef">억압적이고 황폐한 사회를 그리는 장르 톤.</p><p class="mtip"><b>PROMPT</b> — A dystopian, oppressive atmosphere — decayed, controlled, and bleak.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/maximalism" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2023/12/16/261702704033.webp" loading="lazy"></a></div><div class="mbody"><h4>Maximalism <span class="mkr">맥시멀리즘</span></h4><p class="mdef">과잉의 색·질감·레이어로 채운 화면.</p><p class="mtip"><b>PROMPT</b> — Maximalist excess — every surface densely layered with color, pattern, and texture.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/mixed-media" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/04/261709539206.webp" loading="lazy"></a></div><div class="mbody"><h4>Mixed Media <span class="mkr">믹스드 미디어</span></h4><p class="mdef">서로 다른 촬영·소재 형식을 한 작품에 혼합.</p><p class="mtip"><b>EDITING NOTE</b> — 특정 컷만 다른 질감(필름/사진/텍스처)으로 섞어 시각적으로 구분한다.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/collage" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2023/12/19/261703028230.webp" loading="lazy"></a></div><div class="mbody"><h4>Collage <span class="mkr">콜라주</span></h4><p class="mdef">여러 이미지를 조각내 하나로 붙인 구성.</p><p class="mtip"><b>EDITING NOTE</b> — 여러 스틸 이미지를 조각내 하나의 콜라주로 압축 편집한다.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/wigglegram" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/14/261710401391.webp" loading="lazy"></a></div><div class="mbody"><h4>Wigglegram <span class="mkr">위글그램</span></h4><p class="mdef">여러 각도에서 동시 촬영해 미세하게 흔들리는 입체감.</p><p class="mtip"><b>PROMPT</b> — Multi-angle wigglegram shake, the view trembling subtly between near-identical camera angles.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/distortions" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/09/12/261726174531.webp" loading="lazy"></a></div><div class="mbody"><h4>Distortions <span class="mkr">디스토션</span></h4><p class="mdef">이미지가 물리적으로 뒤틀리는 왜곡 전반.</p><p class="mtip"><b>PROMPT</b> — The image physically warps and ripples, reality briefly destabilizing.</p></div></div>
+    </div>
+  </section>
+
+  <!-- CATEGORY J: 인물·시점·무드 -->
+  <section id="cat-J">
+    <div class="catlabel"><span class="n">J</span><h2>인물·시점·무드</h2><span class="c">People, POV &amp; Mood</span></div>
+    <div class="mgrid">
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/first-person-pov" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/06/07/261717741982.webp" loading="lazy"></a></div><div class="mbody"><h4>First-Person <span class="mkr">1인칭 시점</span></h4><p class="mdef">카메라 자체가 캐릭터의 눈이 됨.</p><p class="mtip"><b>PROMPT</b> — First-person POV shot, the camera itself is the subject's eyes, hands occasionally entering frame.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/fourth-wall" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/01/10/261704859264.webp" loading="lazy"></a></div><div class="mbody"><h4>Fourth Wall <span class="mkr">4번째 벽</span></h4><p class="mdef">인물이 관객(카메라)의 존재를 인지하고 반응.</p><p class="mtip"><b>PROMPT</b> — The subject looks directly into the lens and acknowledges the camera's presence.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/snorricam" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/02/20/261708425185.webp" loading="lazy"></a></div><div class="mbody"><h4>Snorricam <span class="mkr">스노리캠</span></h4><p class="mdef">몸에 카메라를 고정, 인물은 그대로 배경만 요동.</p><p class="mtip"><b>PROMPT</b> — Body-rig snorricam locked on the subject's face, the background lurching wildly behind them as they move.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/video-portraits" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/13/261710334571.webp" loading="lazy"></a></div><div class="mbody"><h4>Video Portraits <span class="mkr">비디오 포트레이트</span></h4><p class="mdef">인물의 본질을 담는 짧은 초상 영상.</p><p class="mtip"><b>PROMPT</b> — A still, held portrait shot of the subject, quiet and observational.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/voyeur" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/02/11/261707687620.webp" loading="lazy"></a></div><div class="mbody"><h4>Voyeur <span class="mkr">보이어</span></h4><p class="mdef">인물 모르게 몰래 훔쳐보는 듯한 시점.</p><p class="mtip"><b>PROMPT</b> — Camera peers from a hidden vantage point, watching the subject unseen.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/anthropomorphism" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/06/07/261717742676.webp" loading="lazy"></a></div><div class="mbody"><h4>Anthropomorphism <span class="mkr">의인화</span></h4><p class="mdef">사물·동물에 인간적 특성을 부여.</p><p class="mtip"><b>PROMPT</b> — The object appears to move and behave as if it were alive, with human-like intent.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/choreo" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/05/15/261715813804.webp" loading="lazy"></a></div><div class="mbody"><h4>Choreo <span class="mkr">안무</span></h4><p class="mdef">움직임 자체가 이야기를 전달하는 안무적 연출.</p><p class="mtip"><b>PROMPT</b> — Deliberate, choreographed movement where the motion itself carries the meaning of the scene.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/digital-gesture" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/01/01/261704109560.webp" loading="lazy"></a></div><div class="mbody"><h4>Gesture <span class="mkr">디지털 제스처</span></h4><p class="mdef">허공에서 화면을 조작하듯 하는 손짓 연출.</p><p class="mtip"><b>PROMPT</b> — The subject manipulates an invisible interface in the air with deliberate hand gestures.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/digital-overlay" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/02/19/261708342033.webp" loading="lazy"></a></div><div class="mbody"><h4>Floating UI <span class="mkr">플로팅 UI</span></h4><p class="mdef">화면 위에 추상적 인터페이스를 겹쳐 보여줌.</p><p class="mtip"><b>PROMPT</b> — Abstract digital interface elements float and overlay on top of the live footage.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/floating" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/09/261709962011.webp" loading="lazy"></a></div><div class="mbody"><h4>Levitation <span class="mkr">부유</span></h4><p class="mdef">지지대 없이 공중에 뜬 듯한 연출.</p><p class="mtip"><b>PROMPT</b> — The subject or object hovers in mid-air with no visible support.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/falling" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/09/261709976657.webp" loading="lazy"></a></div><div class="mbody"><h4>Falling <span class="mkr">낙하</span></h4><p class="mdef">추락하는 움직임을 강조하는 샷.</p><p class="mtip"><b>PROMPT</b> — The subject falls, camera dropping with them to emphasize the motion.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/architexture" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2023/12/19/261702984433.webp" loading="lazy"></a></div><div class="mbody"><h4>Architexture <span class="mkr">아키텍스처</span></h4><p class="mdef">건물·도시가 움직이는 텍스처처럼 살아있는 듯 연출.</p><p class="mtip"><b>PROMPT</b> — The architecture itself subtly shifts and breathes like a living texture.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/model" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/14/261710399052.webp" loading="lazy"></a></div><div class="mbody"><h4>Diorama <span class="mkr">디오라마</span></h4><p class="mdef">미니어처 모형처럼 보이는 장면.</p><p class="mtip"><b>PROMPT</b> — The scene rendered like a small-scale miniature diorama.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/color-shift" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/02/04/261707023894.webp" loading="lazy"></a></div><div class="mbody"><h4>Color Shift <span class="mkr">컬러 시프트</span></h4><p class="mdef">장면 중간 색조가 극적으로 전환.</p><p class="mtip"><b>PROMPT</b> — The color grade shifts dramatically mid-shot from one palette to another.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/cinemagraph" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/01/01/261704071329.webp" loading="lazy"></a></div><div class="mbody"><h4>Cinemagraph <span class="mkr">시네마그래프</span></h4><p class="mdef">정지 이미지 속 한 요소만 반복적으로 움직임.</p><p class="mtip"><b>PROMPT</b> — Everything is still except one small element, which loops in continuous subtle motion.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/close-up" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/07/07/261720343410.webp" loading="lazy"></a></div><div class="mbody"><h4>Close-Up <span class="mkr">클로즈업</span></h4><p class="mdef">얼굴/디테일이 프레임을 가득 채움.</p><p class="mtip"><b>PROMPT</b> — Tight close-up filling the frame with the subject's face or a key detail.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/trip" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/03/10/261710032970.webp" loading="lazy"></a></div><div class="mbody"><h4>Altered State <span class="mkr">알터드 스테이트</span></h4><p class="mdef">약물·환각처럼 뒤틀린 시각.</p><p class="mtip"><b>PROMPT</b> — Perception warps into a trip-like altered state, colors bleeding and swimming.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/breakdown" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/02/20/261708472897.webp" loading="lazy"></a></div><div class="mbody"><h4>BTS <span class="mkr">비하인드 더 신</span></h4><p class="mdef">제작 과정이 보이는 듯한 연출(그린스크린 등).</p><p class="mtip"><b>PROMPT</b> — The shot reveals its own production process, like a visible green screen or crew in frame.</p></div></div>
+      <div class="mcard"><div class="mstage"><a href="https://eyecannndy.com/technique/vhs" target="_blank" rel="noopener"><img src="https://asset.eyecannndy.com/media/clip/2024/01/04/261704383512.webp" loading="lazy"></a></div><div class="mbody"><h4>Vintage / VHS <span class="mkr">빈티지</span></h4><p class="mdef">오래된 캠코더·필름처럼 거칠고 흔들리는 화질.</p><p class="mtip"><b>PROMPT</b> — Degraded VHS texture, tracking lines and tape noise over the image.</p></div></div>
+    </div>
+  </section>
+
+  <section style="margin-top:24px; border-top:1px solid var(--line); padding-top:32px;">
+    <h2 style="font-size:20px; margin-bottom:6px;">조합 예시</h2>
+    <p style="color:var(--ink-dim); font-size:13px; margin-bottom:18px;">특정 목적의 장면을 만들 때 함께 쓰면 좋은 기법 조합 — 장르에 상관없이 활용 가능.</p>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:14px;">
+      <div class="card" style="padding:16px 18px;">
+        <div class="kr" style="margin-bottom:6px;">긴장된 리빌 순간</div>
+        <p class="def" style="margin:0;">Worm's-Eye(위압적 로우앵글) → Lazy Susan(주변을 훑는 팬) → Locked-On(중심 고정, 주변 회전) → Flash Cut(서브리미널 인서트)</p>
+      </div>
+      <div class="card" style="padding:16px 18px;">
+        <div class="kr" style="margin-bottom:6px;">액션 임팩트</div>
+        <p class="def" style="margin:0;">Bolt Cam(기습 리빌) → Echo Print(잔상 트레일) → Split Screen(양측 교차) → Crash Zoom(충돌 임팩트)</p>
+      </div>
+      <div class="card" style="padding:16px 18px;">
+        <div class="kr" style="margin-bottom:6px;">감정적 클라이맥스</div>
+        <p class="def" style="margin:0;">Dolly Zoom(심리적 반전) → Shadow Box(여백 속 고립) → Double Exposure(기억·현재 겹침) → Infinite Zoom(디테일로 페이드 전환)</p>
+      </div>
+      <div class="card" style="padding:16px 18px;">
+        <div class="kr" style="margin-bottom:6px;">정체를 감춘 등장</div>
+        <p class="def" style="margin:0;">Silhouette(형체만 노출) + Object Portal(거울·문 등을 통한 암시적 등장) — 정면·디테일은 끝까지 감출 때.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+</body>
+</html>
