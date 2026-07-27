@@ -111,6 +111,23 @@ if ('IntersectionObserver' in window) {
   showAll();
 }
 
+// ---------- 유튜브 플레이어: 누르기 전까지는 로컬 마스터 프레임 ----------
+document.querySelectorAll('.player--lite').forEach(box => {
+  box.addEventListener('click', () => {
+    const id = box.dataset.yt;
+    if (!id || box.dataset.loaded) return;
+    box.dataset.loaded = '1';
+    const f = document.createElement('iframe');
+    f.width = 1280; f.height = 720;
+    f.src = `https://www.youtube.com/embed/${id}?rel=0&modestbranding=1&color=white&autoplay=1`;
+    f.title = box.dataset.title || '';
+    f.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+    f.allowFullscreen = true;
+    box.innerHTML = '';
+    box.appendChild(f);
+  });
+});
+
 // ---------- Works 필터 ----------
 const filters = document.querySelectorAll('.filter');
 const cards = document.querySelectorAll('.card');
