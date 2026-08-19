@@ -49,23 +49,32 @@ img { max-width: 100%; display: block; }
 }
 
 /* ---------- 커스텀 커서 ---------- */
+/* 커서 — 어둠 속에서 하얗게 빛나는 작은 광원 */
 .cursor {
   position: fixed; z-index: 300; pointer-events: none;
-  width: 10px; height: 10px; border-radius: 50%;
-  background: var(--ink);
+  width: 12px; height: 12px; border-radius: 50%;
+  background: #fff;
   transform: translate(-50%, -50%);
-  transition: width 0.25s, height 0.25s, background 0.25s;
   display: flex; align-items: center; justify-content: center;
-  mix-blend-mode: difference;
+  transition: width 0.25s, height 0.25s, box-shadow 0.25s;
+  /* 첫 줄의 얇은 어두운 테두리는 흰 화면에서도 커서를 잃지 않게 한다 */
+  box-shadow:
+    0 0 0 1px rgba(12, 10, 8, 0.16),
+    0 0 10px 3px rgba(255, 255, 255, 0.9),
+    0 0 26px 8px rgba(255, 255, 255, 0.45),
+    0 0 58px 18px rgba(255, 255, 255, 0.18);
 }
 .cursor-label {
-  font-size: 0; letter-spacing: 0.2em; color: #000;
+  font-size: 0; letter-spacing: 0.2em; color: #0c0a08;
   font-family: var(--sans); font-weight: 500;
   transition: font-size 0.15s;
 }
+/* 카드 위에서는 예전 그대로 — 반전되며 커지고 PLAY가 뜬다 */
 .cursor.is-hover {
   width: 74px; height: 74px;
   background: var(--ink);
+  mix-blend-mode: difference;
+  box-shadow: none;
 }
 .cursor.is-hover .cursor-label { font-size: 10px; }
 @media (hover: none) {

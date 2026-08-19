@@ -1,12 +1,11 @@
-// ---------- 커스텀 커서 + 빛가루 (보이는 커서의 자취에만 남는 금빛 먼지) ----------
+// ---------- 커스텀 커서 + 흰 잔광 (지연 없음 / 커서가 지나온 자리에만) ----------
 const cursor = document.querySelector('.cursor');
 if (cursor && matchMedia('(hover: hover)').matches) {
-  const dustOn = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const motesOn = !matchMedia('(prefers-reduced-motion: reduce)').matches;
   let ctx, W, H;
-  const dust = [];
-  const GOLD = ['217,179,108', '233,213,170', '245,235,215'];
+  const motes = [];
 
-  if (dustOn) {
+  if (motesOn) {
     const canvas = document.createElement('canvas');
     canvas.style.cssText = 'position:fixed;inset:0;z-index:250;pointer-events:none;mix-blend-mode:screen;';
     document.body.appendChild(canvas);
@@ -16,62 +15,68 @@ if (cursor && matchMedia('(hover: hover)').matches) {
     addEventListener('resize', fit);
   }
 
-  let x = 0, y = 0, cx = 0, cy = 0;
-  let pcx = 0, pcy = 0, lastSpawn = 0;
-  addEventListener('mousemove', e => { x = e.clientX; y = e.clientY; }, { passive: true });
+  // 미리 그려둔 흰 글로우 스프라이트 — 입자마다 shadowBlur를 거는 것보다 훨씬 가볍다
+  let sprite;
+  if (motesOn) {
+    sprite = document.createElement('canvas');
+    sprite.width = sprite.height = 64;
+    const sc = sprite.getContext('2d');
+    const g = sc.createRadialGradient(32, 32, 0, 32, 32, 32);
+    g.addColorStop(0,    'rgba(255,255,255,1)');
+    g.addColorStop(0.18, 'rgba(255,255,255,0.55)');
+    g.addColorStop(0.45, 'rgba(255,255,255,0.16)');
+    g.addColorStop(1,    'rgba(255,255,255,0)');
+    sc.fillStyle = g;
+    sc.fillRect(0, 0, 64, 64);
+  }
 
-  (function loop(t) {
-    // 보이는 커서: 실제 마우스를 부드럽게 뒤따름
-    cx += (x - cx) * 0.18;
-    cy += (y - cy) * 0.18;
-    cursor.style.left = cx + 'px';
-    cursor.style.top = cy + 'px';
+  let x = 0, y = 0, px = 0, py = 0, lastSpawn = 0;
+  addEventListener('mousemove', e => {
+    x = e.clientX; y = e.clientY;
+    cursor.style.left = x + 'px';   // 보간 없음 — 마우스 위치를 그대로
+    cursor.style.top = y + 'px';
+  }, { passive: true });
 
-    if (dustOn) {
-      // 빛가루는 '화면에 보이는 커서'가 방금 지나온 자리에서만 태어난다
-      const dx = cx - pcx, dy = cy - pcy;
+  if (motesOn) {
+    (function loop(t) {
+      const dx = x - px, dy = y - py;
       const speed = Math.hypot(dx, dy);
-      if (speed > 2.5 && t - lastSpawn > 26) {
+
+      // 커서가 지나온 자리 '뒤쪽'에서만 태어난다
+      if (speed > 3 && t - lastSpawn > 30) {
         lastSpawn = t;
         const ux = dx / speed, uy = dy / speed;
-        const n = speed > 9 ? 2 : 1;
-        for (let i = 0; i < n; i++) {
-          if (dust.length > 90) dust.shift();
-          const back = 6 + Math.random() * 16;        // 보이는 커서보다 항상 뒤
-          const side = (Math.random() - 0.5) * 7;
-          dust.push({
-            x: cx - ux * back - uy * side,
-            y: cy - uy * back + ux * side,
-            r: 0.6 + Math.random() * 1.6,
-            vx: -ux * 0.1 + (Math.random() - 0.5) * 0.08,
-            vy: -0.14 - Math.random() * 0.3,          // 잉걸불처럼 천천히 위로
+        for (let i = 0, n = speed > 12 ? 2 : 1; i < n; i++) {
+          if (motes.length > 34) motes.shift();
+          const back = 8 + Math.random() * 14;
+          const side = (Math.random() - 0.5) * 6;
+          motes.push({
+            x: x - ux * back - uy * side,
+            y: y - uy * back + ux * side,
+            r: 0.7 + Math.random() * 1.3,
+            vx: (Math.random() - 0.5) * 0.12,
+            vy: -0.16 - Math.random() * 0.26,
             life: 1,
-            decay: 0.006 + Math.random() * 0.008,
-            c: GOLD[(Math.random() * GOLD.length) | 0],
-            tw: Math.random() * Math.PI * 2
+            decay: 0.026 + Math.random() * 0.020
           });
         }
       }
-      pcx = cx; pcy = cy;
+      px = x; py = y;
 
       ctx.clearRect(0, 0, W, H);
-      for (let i = dust.length - 1; i >= 0; i--) {
-        const p = dust[i];
-        p.x += p.vx; p.y += p.vy; p.life -= p.decay;
-        if (p.life <= 0) { dust.splice(i, 1); continue; }
-        const twinkle = 0.72 + 0.28 * Math.sin(t * 0.004 + p.tw);
-        const a = p.life * p.life * 0.5 * twinkle;    // 은은하게: 최대 투명도 0.5
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${p.c},${a})`;
-        ctx.shadowColor = `rgba(${p.c},${a * 0.8})`;
-        ctx.shadowBlur = 6;
-        ctx.fill();
-        ctx.shadowBlur = 0;
+      for (let i = motes.length - 1; i >= 0; i--) {
+        const m = motes[i];
+        m.x += m.vx; m.y += m.vy; m.life -= m.decay;
+        if (m.life <= 0) { motes.splice(i, 1); continue; }
+        const a = m.life * m.life * 0.65;
+        const d = m.r * 9;
+        ctx.globalAlpha = a;
+        ctx.drawImage(sprite, m.x - d / 2, m.y - d / 2, d, d);
       }
-    }
-    requestAnimationFrame(loop);
-  })(0);
+      ctx.globalAlpha = 1;
+      requestAnimationFrame(loop);
+    })(0);
+  }
 
   document.querySelectorAll('a.card').forEach(el => {
     el.addEventListener('mouseenter', () => cursor.classList.add('is-hover'));
